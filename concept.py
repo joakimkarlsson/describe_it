@@ -6,13 +6,27 @@ contexts = []
 context_stack = []
 
 
+class Context:
+    def __init__(self, name, parent=None):
+        self.name = name
+        self.parent = parent
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return 'Context({0}, {1})'.format(repr(self.name), repr(self.parent))
+
 def describe(name):
-    def decorator(context):
+    def decorator(fn):
         print('Registering context {0}...'.format(name))
-        my_parent = context_stack[-1] if len(context_stack) else None
-        contexts.append((name, context, my_parent))
+
+        parent = context_stack[-1] if len(context_stack) else None
+        context = Context(name, parent)
+
+        contexts.append(context)
         context_stack.append(context)
-        context()
+        fn()
         context_stack.pop()
 
     return decorator
