@@ -5,46 +5,61 @@ import pprint
 contexts = []
 context_stack = []
 
+def current_context():
+    return context_stack[-1] if context_stack else None
+
 
 class Context:
-    def __init__(self, name, parent=None):
-        self.name = name
+    def __init__(self, function, parent=None):
+        self.function = function
         self.parent = parent
+        self.specs = []
 
     def __str__(self):
         return self.name
 
     def __repr__(self):
-        return 'Context({0}, {1})'.format(repr(self.name), repr(self.parent))
+        return 'Context({0}, {1})'.format(repr(self.function.__name__),
+                                          repr(self.parent))
+    
+    def add_spec(self, spec):
+        self.specs.append(spec)
 
-def describe(name):
-    def decorator(fn):
-        print('Registering context {0}...'.format(name))
+def describe(context_fn):
+    parent = current_context()
+    context = Context(context_fn, parent)
 
-        parent = context_stack[-1] if len(context_stack) else None
-        context = Context(name, parent)
-
-        contexts.append(context)
-        context_stack.append(context)
-        fn()
-        context_stack.pop()
-
-    return decorator
-
-@describe('outermost')
-def _():
-    print('Inside outermost')
-
-    @describe('innermost')
-    def _():
-        print('Inside innermost')
+    contexts.append(context)
+    context_stack.append(context)
+    context_fn()
+    context_stack.pop()
 
 
-@describe('another outermost')
-def _():
+def it(spec):
+    context = current_context()
+    if not context:
+        raise Exception("Adding an 'it' without telling me what you're "
+                        "describing seems a bit silly.")
 
-    @describe('another innermost')
-    def _():
+    context.add_spec(spec)
+
+
+@describe
+def outermost():
+
+    @describe
+    def innermost():
+
+        @it
+        def can_fail():
+            assert 1 == 0
+
+
+@describe
+def another_outermost():
+
+    @describe
+    def another_innermost():
         pass
 
 
