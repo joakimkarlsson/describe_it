@@ -1,6 +1,22 @@
 import unittest
+import describe_it as di
+from expect_it import expect
+
+def empty_describe_fn():
+    pass
 
 class TestContextRegistration(unittest.TestCase):
 
-    def test_describe_registers_itself(self):
-        self.assertEqual(1, 2)
+    def setUp(self):
+        self.registered_contexts = []
+        self.active_contexts = []
+
+    def test_register_one_top_level_context(self):
+        di.describe(describe_fn=empty_describe_fn,
+                    registered_contexts=self.registered_contexts,
+                    active_contexts=self.active_contexts)
+
+        expect(self.registered_contexts[0]).to.be.instance_of(di.Context)
+        expect(self.registered_contexts[0].describe_fn).to.equal(
+            empty_describe_fn)
+        expect(self.registered_contexts[0].parent).to.equal(None)
