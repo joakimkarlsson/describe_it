@@ -5,6 +5,7 @@ import nose
 import re
 import describe_it as di
 import unittest
+import itertools
 
 log = logging.getLogger('nose.plugins.describe_it')
 
@@ -30,23 +31,26 @@ class DescribeItPlugin(Plugin):
         log.debug('loadTestsFromModule({0})'.format(module))
         is_spec_module = re.search('spec$', module.__name__)
         if is_spec_module:
-            test_cases = (create_testcase_for_context(c)
+            test_cases = (create_testcases_for_context(c)
                           for c in di.get_contexts_for_module(module))
-            return test_cases
+            return itertools.chain(*test_cases)
 
 
 class ContextTestCase(unittest.TestCase):
 
-    def __init__(self, context):
+    def __init__(self, context, it_fn):
         self.context = context
+        self.it_fn = it_fn
         unittest.TestCase.__init__(self, methodName='runTest')
         
     def runTest(self):
-        assert 1 == 1
+        self.it_fn()
 
 
-def create_testcase_for_context(context):
-    return ContextTestCase(context)
+def create_testcases_for_context(context):
+    def create_it(it_fn):
+        return ContextTestCase(context, it_fn)
+    return map(create_it, context.it_fns)
 
 
 if __name__ == "__main__":

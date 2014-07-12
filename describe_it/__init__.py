@@ -11,10 +11,14 @@ class Context(object):
     def __init__(self, describe_fn, parent):
         self.describe_fn = describe_fn
         self.parent = parent
+        self.it_fns = []
 
     @property
     def module(self):
         return sys.modules[self.describe_fn.__module__]
+
+    def add_it_fn(self, it_fn):
+        self.it_fns.append(it_fn)
 
 
 def describe(describe_fn,
