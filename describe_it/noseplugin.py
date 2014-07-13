@@ -8,26 +8,17 @@ import itertools
 
 log = logging.getLogger('nose.plugins.describe_it')
 
+
 class DescribeItPlugin(nose.plugins.Plugin):
     name = 'describe-it'
 
     def wantModule(self, module):
-        is_spec_module = re.search('spec$', module.__name__)
-        if is_spec_module:
-            log.debug('wantModule({0})'.format(module))
-        return is_spec_module
+        return re.search('spec$', module.__name__)
 
     def wantFile(self, file):
-        is_spec_file = re.search('spec\.py$', file)
-
-        if is_spec_file:
-            log.debug(
-                'wantFile: {0} - {1}'.format(file,
-                                             'yes' if is_spec_file else 'no'))
-        return is_spec_file
+        return re.search('spec\.py$', file)
 
     def loadTestsFromModule(self, module):
-        log.debug('loadTestsFromModule({0})'.format(module))
         is_spec_module = re.search('spec$', module.__name__)
         if is_spec_module:
             test_cases = (create_testcases_for_context(c)
@@ -40,11 +31,14 @@ class ContextTestCase(unittest.TestCase):
     def __init__(self, context, it_fn):
         self.context = context
         self.it_fn = it_fn
-        unittest.TestCase.__init__(self, methodName='runTest')
-        
-    def runTest(self):
+        unittest.TestCase.__init__(self, methodName='run_test')
+
+    def run_test(self):
         self.context.run_before_eaches()
         self.it_fn()
+
+    def __str__(self):
+        return '{0}: {1}'.format(str(self.context), self.it_fn.__name__)
 
 
 def create_testcases_for_context(context):

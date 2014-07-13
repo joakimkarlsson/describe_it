@@ -3,8 +3,10 @@ import sys
 registered_contexts = []
 active_contexts = []
 
+
 def get_contexts_for_module(module):
     return (c for c in registered_contexts if c.module == module)
+
 
 class Context(object):
 
@@ -31,14 +33,20 @@ class Context(object):
         for be in self.before_each_fns:
             be()
 
+    def __str__(self):
+        if self.parent:
+            return '{0} {1}'.format(
+                str(self.parent), self.describe_fn.__name__)
+        return self.describe_fn.__name__
+
 
 def describe(describe_fn,
-             registered_contexts=registered_contexts, 
+             registered_contexts=registered_contexts,
              active_contexts=active_contexts):
 
     parent = _current_active_context()
 
-    context = Context(describe_fn=describe_fn,parent=parent)
+    context = Context(describe_fn=describe_fn, parent=parent)
 
     registered_contexts.append(context)
 
@@ -60,8 +68,8 @@ def it(it_fn,
 
 
 def before_each(before_each_fn,
-       registered_contexts=registered_contexts,
-       active_contexts=active_contexts):
+                registered_contexts=registered_contexts,
+                active_contexts=active_contexts):
 
     context = _current_active_context()
     if not context:
