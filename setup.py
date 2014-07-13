@@ -10,4 +10,10 @@ setup(
     packages = ['describe_it'],
 
     test_suite = 'tests.test_all',
+
+    entry_points = {
+        'nose.plugins.0.10': [
+            'describe_it = describe_it.noseplugin:DescribeItPlugin'
+        ]
+    }
 )

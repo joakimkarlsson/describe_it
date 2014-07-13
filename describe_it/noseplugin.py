@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import logging
-from nose.plugins import Plugin
 import nose
 import re
 import describe_it as di
@@ -9,7 +8,7 @@ import itertools
 
 log = logging.getLogger('nose.plugins.describe_it')
 
-class DescribeItPlugin(Plugin):
+class DescribeItPlugin(nose.plugins.Plugin):
     name = 'describe-it'
 
     def wantModule(self, module):
@@ -23,7 +22,7 @@ class DescribeItPlugin(Plugin):
 
         if is_spec_file:
             log.debug(
-                'wantFile: {0} - {1}'.format(file, 
+                'wantFile: {0} - {1}'.format(file,
                                              'yes' if is_spec_file else 'no'))
         return is_spec_file
 
