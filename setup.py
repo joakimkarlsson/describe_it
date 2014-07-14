@@ -9,7 +9,8 @@ setup(
     author_email='joakim@jkarlsson.com',
     packages=['describe_it'],
 
-    test_suite='specs.test_all',
+    tests_require=['nose>=1.3.3'],
+    test_suite='nose.collector',
 
     entry_points={
         'nose.plugins.0.10': [
