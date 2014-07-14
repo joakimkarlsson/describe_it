@@ -5,7 +5,7 @@ setup(
     name='describe_it',
     description='unit testing with describe/it syntax and nested contexts',
     url='https://github.com/joakimkarlsson/describe_it',
-    version='0.1.1',
+    version='0.1.2',
     author='Joakim Karlsson',
     author_email='joakim@jkarlsson.com',
     packages=['describe_it'],
