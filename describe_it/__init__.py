@@ -44,7 +44,7 @@ def describe(describe_fn,
              registered_contexts=registered_contexts,
              active_contexts=active_contexts):
 
-    parent = _current_active_context()
+    parent = _current_active_context(active_contexts=active_contexts)
 
     context = Context(describe_fn=describe_fn, parent=parent)
 
@@ -59,7 +59,7 @@ def it(it_fn,
        registered_contexts=registered_contexts,
        active_contexts=active_contexts):
 
-    context = _current_active_context()
+    context = _current_active_context(active_contexts=active_contexts)
     if not context:
         raise Exception("Adding an 'it' without telling me what you're "
                         "describing seems a bit silly.")
@@ -71,7 +71,7 @@ def before_each(before_each_fn,
                 registered_contexts=registered_contexts,
                 active_contexts=active_contexts):
 
-    context = _current_active_context()
+    context = _current_active_context(active_contexts=active_contexts)
     if not context:
         raise Exception("Adding a 'before_each' without describing something "
                         "seems a bit silly.")
@@ -79,5 +79,5 @@ def before_each(before_each_fn,
     context.add_before_each(before_each_fn)
 
 
-def _current_active_context():
+def _current_active_context(active_contexts=active_contexts):
     return active_contexts[-1] if active_contexts else None
