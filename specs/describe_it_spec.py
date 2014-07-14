@@ -1,7 +1,5 @@
-from describe_it import describe, it, before_each
+from describe_it import describe, it, before_each, Fixture
 
-class Fixture(object):
-    pass
 
 @describe
 def an_outer_context():

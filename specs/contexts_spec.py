@@ -1,16 +1,14 @@
-import unittest
 import describe_it as di
 from nose.tools import assert_is_instance, assert_equal, assert_is_none
+
 
 def empty_describe_fn():
     pass
 
-class Fixture(object):
-    pass
 
 @di.describe
 def context_registration():
-    fixture = Fixture()
+    fixture = di.Fixture()
 
     @di.before_each
     def setup():

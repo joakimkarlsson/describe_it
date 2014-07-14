@@ -4,6 +4,10 @@ registered_contexts = []
 active_contexts = []
 
 
+class Fixture(object):
+    pass
+
+
 def get_contexts_for_module(module):
     return (c for c in registered_contexts if c.module == module)
 
