@@ -14,10 +14,10 @@ Writing a test::
 Any module that ends with 'spec' is considered to contain specifications/tests
 for describe_it.
 
-.. code:: python
-
+.. code:: bash
     $ vim myfirst_spec.py
 
+.. code:: python
     from game import Game
     from describe_it import describe, it, before_each, Fixture
 
@@ -48,4 +48,4 @@ Running tests
 
 .. code:: bash
 
-    nosetests --with-describe-it
+    $ nosetests --with-describe-it
