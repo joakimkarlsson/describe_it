@@ -3,15 +3,14 @@ describe it
 
 A nose plugin for describe/it syntax
 
-Installing it
-
+Installing
+----------
 .. code:: bash
 
     $ pip install describe-it
 
-Writing a test
---------------
-
+Writing
+-------
 Any module that ends with 'spec' is considered to contain specifications/tests
 for describe_it.
 
@@ -49,8 +48,8 @@ for describe_it.
             def is_player_twos_turn():
                 assert f.game.current_player == 2
 
-Running tests
-
+Running
+-------
 .. code:: bash
 
     $ nosetests --with-describe-it
