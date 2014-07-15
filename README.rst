@@ -22,6 +22,7 @@ for describe_it.
 ...and the content:
 
 .. code:: python
+
     from game import Game
     from describe_it import describe, it, before_each, Fixture
 
