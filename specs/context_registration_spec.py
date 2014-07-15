@@ -60,7 +60,7 @@ def context_registration():
         @di.it
         def has_the_top_level_context_as_parent():
             describe(empty_describe_fn)
-            subs = filter(lambda c: c.parent == fixture.top_level,
-                          fixture.registered_contexts)
+            subs = list(filter(lambda c: c.parent == fixture.top_level,
+                          fixture.registered_contexts))
             assert_equal(len(subs), 1)
 
