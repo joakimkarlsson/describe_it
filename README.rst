@@ -1,7 +1,7 @@
 describe it
 ===========
 
-A nose plugin for describe/it syntax
+|buildstatus|_
 
 Installing
 ----------
@@ -53,3 +53,6 @@ Running
 .. code:: bash
 
     $ nosetests --with-describe-it
+
+.. |buildstatus| image:: https://travis-ci.org/joakimkarlsson/describe_it.svg
+.. _buildstatus: https://travis-ci.org/joakimkarlsson/describe_it
