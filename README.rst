@@ -9,13 +9,17 @@ Installing it
 
     $ pip install describe-it
 
-Writing a test::
+Writing a test
+--------------
 
 Any module that ends with 'spec' is considered to contain specifications/tests
 for describe_it.
 
 .. code:: bash
+
     $ vim myfirst_spec.py
+
+...and the content:
 
 .. code:: python
     from game import Game
