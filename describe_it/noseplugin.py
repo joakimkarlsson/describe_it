@@ -34,8 +34,7 @@ class ContextTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self, methodName='run_test')
 
     def run_test(self):
-        self.context.run_before_eaches()
-        self.it_fn()
+        self.context.run_it(self.it_fn)
 
     def __str__(self):
         return '{0}: {1}'.format(str(self.context), self.it_fn.__name__)

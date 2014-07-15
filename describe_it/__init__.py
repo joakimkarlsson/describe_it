@@ -37,6 +37,10 @@ class Context(object):
         for be in self.before_each_fns:
             be()
 
+    def run_it(self, it_fn):
+        self.run_before_eaches()
+        it_fn()
+
     def __str__(self):
         if self.parent:
             return '{0} {1}'.format(

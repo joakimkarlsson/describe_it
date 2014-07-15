@@ -14,7 +14,7 @@ setup(
     packages=['describe_it'],
     install_requires=['nose>=1.3.3'],
 
-    tests_require=['nose>=1.3.3'],
+    tests_require=['nose>=1.3.3', 'mock>=1.0.1'],
     test_suite='nose.collector',
 
     entry_points={
