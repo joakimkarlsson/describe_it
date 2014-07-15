@@ -9,7 +9,10 @@ Installing it::
 
 Writing a test::
 
-    >vim myfirst_spec.py
+Any module that ends with 'spec' is considered to contain specifications/tests
+for describe_it.::
+
+    $ vim myfirst_spec.py
 
     from game import Game
     from describe_it import describe, it, before_each, Fixture
@@ -40,5 +43,3 @@ Writing a test::
 Running tests::
 
     nosetests --with-describe-it
-
-At the moment only files ending with 'spec.py' are considered to contain tests for describe/it (this will probably change).
