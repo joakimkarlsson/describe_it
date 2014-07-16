@@ -11,7 +11,9 @@ setup(
     url='https://github.com/joakimkarlsson/describe_it',
     author='Joakim Karlsson',
     author_email='joakim@jkarlsson.com',
+
     packages=['describe_it'],
+    include_package_data = True,
     install_requires=['nose>=1.3.3'],
 
     tests_require=['nose>=1.3.3', 'mock>=1.0.1'],
