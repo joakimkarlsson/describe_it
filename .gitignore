@@ -3,3 +3,4 @@ build/
 *.egg*
 venv/
 dist/
+.DS_Store
