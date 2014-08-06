@@ -33,6 +33,11 @@ for describe_it.
         def setup():
             f.game = Game()
 
+        @after_each
+        def teardown():
+            # This should rarely be needed!
+            perform_post_test_cleanup_if_needed()
+
         @it
         def is_player_ones_turn():
             assert f.game.current_player == 1
