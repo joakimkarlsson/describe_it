@@ -19,6 +19,7 @@ class Context(object):
         self.parent = parent
         self.it_fns = []
         self.before_each_fns = []
+        self.after_each_fns = []
 
     @property
     def module(self):
@@ -30,6 +31,9 @@ class Context(object):
     def add_before_each(self, before_each_fn):
         self.before_each_fns.append(before_each_fn)
 
+    def add_after_each(self, after_each_fn):
+        self.after_each_fns.append(after_each_fn)
+
     def run_before_eaches(self):
         if self.parent:
             self.parent.run_before_eaches()
@@ -37,8 +41,14 @@ class Context(object):
         for be in self.before_each_fns:
             be()
 
+    def run_after_eaches(self):
+        for ae in self.after_each_fns:
+            ae()
+
+        if self.parent:
+            self.parent.run_after_eaches()
+
     def run_it(self, it_fn):
-        self.run_before_eaches()
         it_fn()
 
     def __str__(self):
@@ -86,6 +96,17 @@ def before_each(before_each_fn,
 
     context.add_before_each(before_each_fn)
 
+
+def after_each(after_each_fn,
+               registered_contexts=registered_contexts,
+               active_contexts=active_contexts):
+
+    context = _current_active_context(active_contexts=active_contexts)
+    if not context:
+        raise Exception("Adding a 'after_each' without describing something "
+                        "seems a bit silly.")
+
+    context.add_after_each(after_each_fn)
 
 def _current_active_context(active_contexts=active_contexts):
     return active_contexts[-1] if active_contexts else None

@@ -1,4 +1,4 @@
-from describe_it import describe, it, before_each, Fixture
+from describe_it import describe, it, before_each, after_each, Fixture
 
 
 @describe
@@ -47,3 +47,31 @@ def an_outer_context():
             @it
             def gets_the_augmented_fixture():
                 assert fixture.x == 32
+
+
+@describe
+def a_context_with_an_after_each():
+    f = Fixture()
+    f.status = 'just created context'
+    f.expected_statuses_in_setup = ['just created context', 'tore down']
+
+    @before_each
+    def setup():
+        expected_status = f.expected_statuses_in_setup.pop(0)
+        assert f.status == expected_status
+        f.status = 'set up'
+
+    @after_each
+    def teardown():
+        assert f.status == 'ran test'
+        f.status = 'tore down'
+
+    @it
+    def does_something():
+        assert f.status == 'set up'
+        f.status = 'ran test'
+
+    @it
+    def does_something_else():
+        assert f.status == 'set up'
+        f.status = 'ran test'

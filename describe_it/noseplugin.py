@@ -33,6 +33,12 @@ class ContextTestCase(unittest.TestCase):
         self.it_fn = it_fn
         unittest.TestCase.__init__(self, methodName='run_test')
 
+    def setUp(self):
+        self.context.run_before_eaches()
+
+    def tearDown(self):
+        self.context.run_after_eaches()
+
     def run_test(self):
         self.context.run_it(self.it_fn)
 

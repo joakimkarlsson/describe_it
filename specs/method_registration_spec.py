@@ -1,14 +1,22 @@
 import describe_it as di
 from nose.tools import assert_equal
 
+
 def empty_describe_fn():
     pass
+
 
 def empty_it_fn():
     pass
 
+
 def empty_before_each_fn():
     pass
+
+
+def empty_after_each_fn():
+    pass
+
 
 @di.describe
 def method_registration():
@@ -32,6 +40,10 @@ def method_registration():
         assert_equal(len(f.top_level.before_each_fns), 0)
 
     @di.it
+    def starts_without_any_registered_after_each_functions():
+        assert_equal(len(f.top_level.after_each_fns), 0)
+
+    @di.it
     def can_register_an_it_method():
         di.it(it_fn=empty_it_fn,
               registered_contexts=f.registered_contexts,
@@ -46,3 +58,11 @@ def method_registration():
                        active_contexts=f.active_contexts)
 
         assert_equal(f.top_level.before_each_fns[0], empty_before_each_fn)
+
+    @di.it
+    def can_register_a_after_each_function():
+        di.after_each(after_each_fn=empty_after_each_fn,
+                      registered_contexts=f.registered_contexts,
+                      active_contexts=f.active_contexts)
+
+        assert_equal(f.top_level.after_each_fns[0], empty_after_each_fn)
