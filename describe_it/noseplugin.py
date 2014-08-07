@@ -28,6 +28,8 @@ class DescribeItPlugin(nose.plugins.Plugin):
 
 class ContextTestCase(unittest.TestCase):
 
+    __test__ = False
+
     def __init__(self, it_fn):
         self.it_fn = it_fn
         unittest.TestCase.__init__(self, methodName='run_test')
@@ -39,6 +41,9 @@ class ContextTestCase(unittest.TestCase):
         self.it_fn.context.run_after_eaches()
 
     def run_test(self):
+        if hasattr(self.it_fn, 'skip') and self.it_fn.skip:
+            raise unittest.SkipTest('Marked as skipped')
+
         self.it_fn()
 
     def __str__(self):

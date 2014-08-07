@@ -82,6 +82,19 @@ def it(it_fn,
     registered_it_fns.append(it_fn)
 
 
+def xit(it_fn,
+        registered_it_fns=registered_it_fns,
+        active_contexts=active_contexts):
+
+    context = _current_active_context(active_contexts=active_contexts)
+    if not context:
+        raise Exception("Adding an 'xit' without telling me what you're "
+                        "describing seems a bit silly.")
+
+    it_fn.context = context
+    it_fn.skip = True
+    registered_it_fns.append(it_fn)
+
 def before_each(before_each_fn,
                 registered_contexts=registered_contexts,
                 active_contexts=active_contexts):
