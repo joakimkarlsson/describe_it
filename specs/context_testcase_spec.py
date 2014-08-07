@@ -23,18 +23,75 @@ def context_testcase():
         f.testcase.run_test()
         f.it_fn.assert_called_once_with()
 
-    @it
-    def doesnt_call_it_fn_if_marked_as_skip():
-        try:
+    @describe
+    def context_marked_as_skipped():
+
+        @before_each
+        def setup():
+            f.context.skip = True
+
+        @it
+        def doesnt_call_it_fn():
+            try:
+                f.testcase.run_test()
+            except SkipTest:    # Letting this bubble up would mark this test as
+                                # skipped.
+                pass
+
+            assert not f.it_fn.called
+
+        @it
+        def throws_SkipTest():
+            assert_raises(SkipTest, f.testcase.run_test)
+
+    @describe
+    def it_fn_marked_as_skipped():
+
+        @before_each
+        def setup():
             f.it_fn.skip = True
+
+        @it
+        def doesnt_call_it_fn():
+            try:
+                f.testcase.run_test()
+            except SkipTest:    # Letting this bubble up would mark this test as
+                                # skipped.
+                pass
+
+            assert not f.it_fn.called
+
+        @it
+        def throws_SkipTest():
+            assert_raises(SkipTest, f.testcase.run_test)
+
+    @describe
+    def context_has_a_parent():
+
+        @before_each
+        def setup():
+            f.child_context = Context(describe_fn=f.describe_fn,
+                                      parent=f.context)
+            f.it_fn.context = f.child_context
+
+        @it
+        def calls_it_fn():
             f.testcase.run_test()
-        except SkipTest:    # Letting this bubble up would mark this test as
-                            # skipped.
-            pass
+            f.it_fn.assert_called_once_with()
 
-        assert not f.it_fn.called
+        @describe
+        def parent_is_marked_as_skipped():
 
-    @it
-    def throws_SkipTest_if_marked_as_skip():
-        f.it_fn.skip = True
-        assert_raises(SkipTest, f.testcase.run_test)
+            @before_each
+            def setup():
+                f.context.skip = True
+
+            @it
+            def doesnt_call_it_fn():
+                try:
+                    f.testcase.run_test()
+                except SkipTest:    # Letting this bubble up would mark this
+                                    # test as skipped.
+                    pass
+
+                assert not f.it_fn.called

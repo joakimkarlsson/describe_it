@@ -1,5 +1,6 @@
 import describe_it as di
-from nose.tools import assert_is_instance, assert_equal, assert_is_none
+from nose.tools import (assert_is_instance, assert_equal,
+                        assert_is_none, assert_false, assert_true)
 
 
 def empty_describe_fn():
@@ -19,6 +20,11 @@ def context_registration():
         di.describe(describe_fn=describe_fn,
                     registered_contexts=fixture.registered_contexts,
                     active_contexts=fixture.active_contexts)
+
+    def xdescribe(describe_fn):
+        di.xdescribe(describe_fn=describe_fn,
+                     registered_contexts=fixture.registered_contexts,
+                     active_contexts=fixture.active_contexts)
 
     @di.describe
     def a_top_level_context():
@@ -41,6 +47,17 @@ def context_registration():
             top_level = fixture.registered_contexts[0]
             assert_is_none(top_level.parent)
 
+        @di.it
+        def is_not_marked_as_skipped_by_default():
+            describe(empty_describe_fn)
+            top_level = fixture.registered_contexts[0]
+            assert_false(top_level.skip)
+
+        @di.it
+        def can_be_marked_as_skipped():
+            xdescribe(empty_describe_fn)
+            top_level = fixture.registered_contexts[0]
+            assert_true(top_level.skip)
 
     @di.describe
     def a_nested_context():

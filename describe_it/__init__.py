@@ -15,12 +15,13 @@ def get_it_fns_for(module):
 
 class Context(object):
 
-    def __init__(self, describe_fn, parent):
+    def __init__(self, describe_fn, parent, skip=False):
         self.describe_fn = describe_fn
         self.parent = parent
         self.it_fns = []
         self.before_each_fns = []
         self.after_each_fns = []
+        self.skip = skip
 
     @property
     def module(self):
@@ -46,6 +47,9 @@ class Context(object):
         if self.parent:
             self.parent.run_after_eaches()
 
+    def should_skip(self):
+        return self.skip or self.parent and self.parent.should_skip()
+
     def __str__(self):
         if self.parent:
             return '{0} {1}'.format(
@@ -55,17 +59,24 @@ class Context(object):
 
 def describe(describe_fn,
              registered_contexts=registered_contexts,
-             active_contexts=active_contexts):
+             active_contexts=active_contexts,
+             skip=False):
 
     parent = _current_active_context(active_contexts=active_contexts)
 
-    context = Context(describe_fn=describe_fn, parent=parent)
+    context = Context(describe_fn=describe_fn, parent=parent, skip=skip)
 
     registered_contexts.append(context)
 
     active_contexts.append(context)
     describe_fn()
     active_contexts.pop()
+
+
+def xdescribe(describe_fn,
+              registered_contexts=registered_contexts,
+              active_contexts=active_contexts):
+    describe(describe_fn, registered_contexts, active_contexts, skip=True)
 
 
 def it(it_fn,
