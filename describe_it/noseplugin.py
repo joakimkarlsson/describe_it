@@ -21,35 +21,30 @@ class DescribeItPlugin(nose.plugins.Plugin):
     def loadTestsFromModule(self, module):
         is_spec_module = re.search('spec$', module.__name__)
         if is_spec_module:
-            test_cases = (create_testcases_for_context(c)
-                          for c in di.get_contexts_for_module(module))
-            return itertools.chain(*test_cases)
+            test_cases = (ContextTestCase(i)
+                          for i in di.get_it_fns_for(module))
+            return test_cases
 
 
 class ContextTestCase(unittest.TestCase):
 
-    def __init__(self, context, it_fn):
-        self.context = context
+    def __init__(self, it_fn):
         self.it_fn = it_fn
         unittest.TestCase.__init__(self, methodName='run_test')
 
     def setUp(self):
-        self.context.run_before_eaches()
+        self.it_fn.context.run_before_eaches()
 
     def tearDown(self):
-        self.context.run_after_eaches()
+        self.it_fn.context.run_after_eaches()
 
     def run_test(self):
-        self.context.run_it(self.it_fn)
+        self.it_fn()
 
     def __str__(self):
-        return '{0}: {1}'.format(str(self.context), self.it_fn.__name__)
+        return '{0}: {1}'.format(str(self.it_fn.context), self.it_fn.__name__)
 
 
-def create_testcases_for_context(context):
-    def create_it(it_fn):
-        return ContextTestCase(context, it_fn)
-    return map(create_it, context.it_fns)
 
 
 if __name__ == "__main__":

@@ -2,14 +2,15 @@ import sys
 
 registered_contexts = []
 active_contexts = []
+registered_it_fns = []
 
 
 class Fixture(object):
     pass
 
 
-def get_contexts_for_module(module):
-    return (c for c in registered_contexts if c.module == module)
+def get_it_fns_for(module):
+    return (i for i in registered_it_fns if i.context.module == module)
 
 
 class Context(object):
@@ -24,9 +25,6 @@ class Context(object):
     @property
     def module(self):
         return sys.modules[self.describe_fn.__module__]
-
-    def add_it_fn(self, it_fn):
-        self.it_fns.append(it_fn)
 
     def add_before_each(self, before_each_fn):
         self.before_each_fns.append(before_each_fn)
@@ -47,9 +45,6 @@ class Context(object):
 
         if self.parent:
             self.parent.run_after_eaches()
-
-    def run_it(self, it_fn):
-        it_fn()
 
     def __str__(self):
         if self.parent:
@@ -74,7 +69,7 @@ def describe(describe_fn,
 
 
 def it(it_fn,
-       registered_contexts=registered_contexts,
+       registered_it_fns=registered_it_fns,
        active_contexts=active_contexts):
 
     context = _current_active_context(active_contexts=active_contexts)
@@ -82,7 +77,9 @@ def it(it_fn,
         raise Exception("Adding an 'it' without telling me what you're "
                         "describing seems a bit silly.")
 
-    context.add_it_fn(it_fn)
+    it_fn.context = context
+    it_fn.skip = False
+    registered_it_fns.append(it_fn)
 
 
 def before_each(before_each_fn,

@@ -15,12 +15,6 @@ def context():
         f.context = Context(describe_fn=empty_describe_fn,
                             parent=None)
 
-    @it
-    def calls_an_it_function():
-        it_fn = MagicMock()
-        f.context.run_it(it_fn)
-        it_fn.assert_called_once_with()
-
     @describe
     def with_before_each_and_after_each_functions():
 
