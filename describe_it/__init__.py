@@ -110,6 +110,11 @@ def xit(it_fn,
     it_fn.skip = True
     registered_it_fns.append(it_fn)
 
+
+def it_skip(*args, **kwargs):
+    xit(*args, **kwargs)
+
+
 def before_each(before_each_fn,
                 registered_contexts=registered_contexts,
                 active_contexts=active_contexts):
@@ -132,6 +137,7 @@ def after_each(after_each_fn,
                         "seems a bit silly.")
 
     context.add_after_each(after_each_fn)
+
 
 def _current_active_context(active_contexts=active_contexts):
     return active_contexts[-1] if active_contexts else None
