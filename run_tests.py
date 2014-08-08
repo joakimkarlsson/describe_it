@@ -6,7 +6,7 @@ from os.path import join, dirname, realpath
 
 TITLE_FAIL = 'ACH!'
 TITLE_SUCCEED = 'YAY!'
-MESSAGE_SUCCEED  = 'Tests passed!'
+MESSAGE_SUCCEED = 'Tests passed!'
 MESSAGE_FAIL = 'Tests failed!'
 
 def null_notify(res):
@@ -24,11 +24,11 @@ def win32_notify(res):
 
 def macos_notify(res):
     message = MESSAGE_FAIL if res else MESSAGE_SUCCEED
-    title = TITLE_FAIL if res else TITLE_FAIL
+    title = TITLE_FAIL if res else TITLE_SUCCEED
     sp.call(
-        [('osascript', '-e', 'display notification "{message}" ' +
-          'with title "{title}"'.format(message=message,
-                                        title=title))])
+        ['osascript', '-e', 'display notification "{message}" '
+         'with title "{title}"'.format(message=message,
+                                       title=title)])
 
 
 def notify(res):
