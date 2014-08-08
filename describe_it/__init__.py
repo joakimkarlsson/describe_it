@@ -79,6 +79,10 @@ def xdescribe(describe_fn,
     describe(describe_fn, registered_contexts, active_contexts, skip=True)
 
 
+def describe_skip(*args, **kwargs):
+    xdescribe(*args, **kwargs)
+
+
 def it(it_fn,
        registered_it_fns=registered_it_fns,
        active_contexts=active_contexts):
