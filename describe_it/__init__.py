@@ -52,7 +52,7 @@ class Context(object):
 
     def __str__(self):
         if self.parent:
-            return '{0} {1}'.format(
+            return '{0}:{1}'.format(
                 str(self.parent), self.describe_fn.__name__)
         return self.describe_fn.__name__
 

@@ -4,7 +4,7 @@ import nose
 import re
 import describe_it as di
 import unittest
-import itertools
+import inspect
 
 log = logging.getLogger('nose.plugins.describe_it')
 
@@ -47,9 +47,26 @@ class ContextTestCase(unittest.TestCase):
         self.it_fn()
 
     def __str__(self):
-        return '{0}: {1}'.format(str(self.it_fn.context), self.it_fn.__name__)
+        return '{file}:{line}: {context}:{name}'.format(
+            file=self.filename,
+            line=self.lineno,
+            context=self.it_fn.context,
+            name=self.it_fn.__name__)
 
+    @property
+    def filename(self):
+        try:
+            return inspect.getsourcefile(self.it_fn)
+        except TypeError:
+            return "[NO FILEINFO]"
 
+    @property
+    def lineno(self):
+        try:
+            _, lineno = inspect.getsourcelines(self.it_fn)
+            return lineno
+        except IOError:
+            return 0
 
 
 if __name__ == "__main__":
