@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='describe_it',
-    version='2.0.0',
+    version='2.1.0',
     description=('A nose plugin that supports writing describe/it style '
                  'unit tests with nested contexts'),
     long_description=open('README.rst').read(),

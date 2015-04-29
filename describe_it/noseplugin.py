@@ -47,11 +47,11 @@ class ContextTestCase(unittest.TestCase):
         self.it_fn()
 
     def __str__(self):
-        return '{file}:{line}: {context}:{name}'.format(
+        return '{context}: {name}'.format(
             file=self.filename,
             line=self.lineno,
-            context=self.it_fn.context,
-            name=self.it_fn.__name__)
+            context=str(self.it_fn.context).replace('_', ' '),
+            name=self.it_fn.__name__.replace('_', ' '))
 
     @property
     def filename(self):
