@@ -1,4 +1,5 @@
 import sys
+import functools as ft
 
 registered_contexts = []
 active_contexts = []
@@ -81,6 +82,20 @@ def xdescribe(describe_fn,
 
 def describe_skip(*args, **kwargs):
     xdescribe(*args, **kwargs)
+
+
+def with_data(data):
+    def decorator(it_fn, registered_it_fns=registered_it_fns,
+                  active_contexts=active_contexts):
+        for index, datum in enumerate(data, 1):
+            it_fn_with_datum = ft.partial(it_fn, *datum)
+            ft.update_wrapper(it_fn_with_datum, it_fn)
+            it_fn_with_datum.__name__ = '{}_{}'.format(it_fn.__name__, index)
+            it(it_fn_with_datum,
+               registered_it_fns=registered_it_fns,
+               active_contexts=active_contexts)
+
+    return decorator
 
 
 def it(it_fn,

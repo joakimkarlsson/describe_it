@@ -91,3 +91,20 @@ def method_registration():
                       active_contexts=f.active_contexts)
 
         assert_equal(f.top_level.after_each_fns[0], empty_after_each_fn)
+
+    @di.it
+    def can_register_a_method_with_data():
+        def can_add(term1,  term2, expected):
+            assert (term1 + term2) == expected
+
+        decorator = di.with_data([(1, 1, 2)])
+        decorator(can_add,
+                  registered_it_fns=f.registered_it_fns,
+                  active_contexts=f.active_contexts)
+
+        assert_equal(f.registered_it_fns[0].__name__, 'can_add_1')
+
+    @di.with_data([(1, 2, 3),
+                   (3, 4, 6)])
+    def can_add(t1, t2, expected):
+        assert_equal(t1+t2, expected)

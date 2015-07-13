@@ -5,6 +5,7 @@ import re
 import describe_it as di
 import unittest
 import inspect
+import functools
 
 log = logging.getLogger('nose.plugins.describe_it')
 
@@ -56,14 +57,16 @@ class ContextTestCase(unittest.TestCase):
     @property
     def filename(self):
         try:
-            return inspect.getsourcefile(self.it_fn)
+            fn = self.it_fn.func if type(self.it_fn) == functools.partial else self.it_fn
+            return inspect.getsourcefile(fn)
         except TypeError:
             return "[NO FILEINFO]"
 
     @property
     def lineno(self):
         try:
-            _, lineno = inspect.getsourcelines(self.it_fn)
+            fn = self.it_fn.func if type(self.it_fn) == functools.partial else self.it_fn
+            _, lineno = inspect.getsourcelines(fn)
             return lineno
         except IOError:
             return 0
