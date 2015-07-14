@@ -105,6 +105,6 @@ def method_registration():
         assert_equal(f.registered_it_fns[0].__name__, 'can_add_1')
 
     @di.with_data([(1, 2, 3),
-                   (3, 4, 6)])
+                   (3, 4, 7)])
     def can_add(t1, t2, expected):
         assert_equal(t1+t2, expected)
