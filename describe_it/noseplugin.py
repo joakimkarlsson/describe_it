@@ -57,19 +57,25 @@ class ContextTestCase(unittest.TestCase):
     @property
     def filename(self):
         try:
-            fn = self.it_fn.func if type(self.it_fn) == functools.partial else self.it_fn
-            return inspect.getsourcefile(fn)
+            return inspect.getsourcefile(self.__get_actual_function())
         except TypeError:
             return "[NO FILEINFO]"
 
     @property
     def lineno(self):
         try:
-            fn = self.it_fn.func if type(self.it_fn) == functools.partial else self.it_fn
-            _, lineno = inspect.getsourcelines(fn)
+            _, lineno = inspect.getsourcelines(self.__get_actual_function())
             return lineno
         except IOError:
             return 0
+
+    def __get_actual_function(self):
+        '''The @with_data decorator wraps the actual 'it' function in a
+        functoools.partial. For operations that wants to inspect the function
+        for source file and line numbers, we need to retrieve the wrapped
+        function in order to get all info'''
+        return (self.it_fn.func if type(self.it_fn) == functools.partial
+                else self.it_fn)
 
 
 if __name__ == "__main__":
