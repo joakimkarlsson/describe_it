@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 from setuptools import setup
 
+VERSION='2.2.0'
+
 setup(
     name='describe_it',
-    version='2.1.0',
+    version=VERSION,
     description=('A nose plugin that supports writing describe/it style '
                  'unit tests with nested contexts'),
     long_description=open('README.rst').read(),
