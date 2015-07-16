@@ -1,2 +1,0 @@
-set wildignore+=*/venv/*
-set wildignore+=*.pyc
