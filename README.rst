@@ -69,9 +69,9 @@ for describe_it.
                 assert True
 
             @with_data([1, 2, 3],                           # You can parameterize tests with
-                       [3, 4, 9])                           # different combinations of inputs
+                       [3, 4, 7])                           # different combinations of inputs
             def adds_numbers(term_1, term_2, expected):
-                assert (term_1 + term_2) == expected
+                assert term_1 + term_2 == expected
 
      @xdescribe                                             # You can skip whole contexts by
      def this_context_is_marked_as_skipped():               # using '@xdescribe' or '@describe_skip'
