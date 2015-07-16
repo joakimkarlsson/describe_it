@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup
 
-VERSION='2.2.0'
+VERSION='2.2.1'
 
 setup(
     name='describe_it',
