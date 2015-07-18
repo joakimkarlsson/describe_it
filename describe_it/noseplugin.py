@@ -36,10 +36,12 @@ class ContextTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self, methodName='run_test')
 
     def setUp(self):
-        self.it_fn.context.run_before_eaches()
+        if not self.it_fn.should_skip():
+            self.it_fn.context.run_before_eaches()
 
     def tearDown(self):
-        self.it_fn.context.run_after_eaches()
+        if not self.it_fn.should_skip():
+            self.it_fn.context.run_after_eaches()
 
     def run_test(self):
         if self.it_fn.should_skip():

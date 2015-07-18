@@ -44,6 +44,36 @@ def context_testcase():
         def throws_SkipTest():
             assert_raises(SkipTest, f.testcase.run_test)
 
+        @describe
+        def context_has_before_and_after_each():
+
+            @before_each
+            def setup():
+                f.before_each = MagicMock()
+                f.context.add_before_each(f.before_each)
+                f.after_each = MagicMock()
+                f.context.add_after_each(f.after_each)
+
+            @it
+            def doesnt_call_before_each():
+                try:
+                    f.testcase.setUp()
+                except SkipTest:    # Letting this bubble up would mark this
+                                    # test as skipped.
+                    pass
+
+                assert not f.before_each.called
+
+            @it
+            def doesnt_call_after_each():
+                try:
+                    f.testcase.tearDown()
+                except SkipTest:    # Letting this bubble up would mark this
+                                    # test as skipped.
+                    pass
+
+                assert not f.after_each.called
+
     @describe
     def it_fn_marked_as_skipped():
 
@@ -64,6 +94,37 @@ def context_testcase():
         @it
         def throws_SkipTest():
             assert_raises(SkipTest, f.testcase.run_test)
+
+        @describe
+        def context_has_before_and_after_each():
+
+            @before_each
+            def setup():
+                f.before_each = MagicMock()
+                f.context.add_before_each(f.before_each)
+                f.after_each = MagicMock()
+                f.context.add_after_each(f.after_each)
+
+            @it
+            def doesnt_call_before_each():
+                try:
+                    f.testcase.setUp()
+                except SkipTest:    # Letting this bubble up would mark this
+                                    # test as skipped.
+                    pass
+
+                assert not f.before_each.called
+
+            @it
+            def doesnt_call_after_each():
+                try:
+                    f.testcase.tearDown()
+                except SkipTest:    # Letting this bubble up would mark this
+                                    # test as skipped.
+                    pass
+
+                assert not f.after_each.called
+
 
     @describe
     def context_has_a_parent():
