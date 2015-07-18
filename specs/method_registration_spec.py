@@ -66,7 +66,7 @@ def method_registration():
               registered_it_fns=f.registered_it_fns,
               active_contexts=f.active_contexts)
 
-        assert_equal(f.registered_it_fns[0].skip, False)
+        assert_equal(f.registered_it_fns[0].should_skip(), False)
 
     @di.it
     def can_register_a_method_as_skipped():
@@ -74,7 +74,7 @@ def method_registration():
                registered_it_fns=f.registered_it_fns,
                active_contexts=f.active_contexts)
 
-        assert_equal(f.registered_it_fns[0].skip, True)
+        assert_equal(f.registered_it_fns[0].should_skip(), True)
 
     @di.it
     def can_register_a_before_each_function():

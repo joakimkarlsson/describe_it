@@ -34,6 +34,10 @@ class Context(object):
     def add_after_each(self, after_each_fn):
         self.after_each_fns.append(after_each_fn)
 
+    def add_it(self, it_fn):
+        it_fn.context = self
+        it_fn.should_skip = lambda: bool(it_fn.skip or self.should_skip())
+
     def run_before_eaches(self):
         if self.parent:
             self.parent.run_before_eaches()
@@ -99,6 +103,7 @@ def with_data(data):
 
 
 def it(it_fn,
+       skip=False,
        registered_it_fns=registered_it_fns,
        active_contexts=active_contexts):
 
@@ -107,23 +112,16 @@ def it(it_fn,
         raise Exception("Adding an 'it' without telling me what you're "
                         "describing seems a bit silly.")
 
-    it_fn.context = context
-    it_fn.skip = False
+    it_fn.skip = skip
+    context.add_it(it_fn)
     registered_it_fns.append(it_fn)
 
 
 def xit(it_fn,
         registered_it_fns=registered_it_fns,
         active_contexts=active_contexts):
-
-    context = _current_active_context(active_contexts=active_contexts)
-    if not context:
-        raise Exception("Adding an 'xit' without telling me what you're "
-                        "describing seems a bit silly.")
-
-    it_fn.context = context
-    it_fn.skip = True
-    registered_it_fns.append(it_fn)
+    it(it_fn, skip=True,
+       registered_it_fns=registered_it_fns, active_contexts=active_contexts)
 
 
 def it_skip(*args, **kwargs):
