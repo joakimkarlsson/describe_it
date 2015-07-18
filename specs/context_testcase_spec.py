@@ -125,7 +125,6 @@ def context_testcase():
 
                 assert not f.after_each.called
 
-
     @describe
     def context_has_a_parent():
 
