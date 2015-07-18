@@ -42,7 +42,7 @@ class ContextTestCase(unittest.TestCase):
         self.it_fn.context.run_after_eaches()
 
     def run_test(self):
-        if self.it_fn.skip or self.it_fn.context.should_skip():
+        if self.it_fn.should_skip():
             raise unittest.SkipTest('Marked as skipped')
 
         self.it_fn()

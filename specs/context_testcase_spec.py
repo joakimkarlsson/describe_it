@@ -15,7 +15,7 @@ def context_testcase():
         f.context = Context(describe_fn=f.describe_fn, parent=None)
         f.it_fn = MagicMock()
         f.it_fn.skip = False
-        f.it_fn.context = f.context
+        f.context.add_it(f.it_fn)
         f.testcase = ContextTestCase(it_fn=f.it_fn)
 
     @it
@@ -34,8 +34,8 @@ def context_testcase():
         def doesnt_call_it_fn():
             try:
                 f.testcase.run_test()
-            except SkipTest:    # Letting this bubble up would mark this test as
-                                # skipped.
+            except SkipTest:    # Letting this bubble up would mark this test
+                                # as skipped.
                 pass
 
             assert not f.it_fn.called
@@ -55,8 +55,8 @@ def context_testcase():
         def doesnt_call_it_fn():
             try:
                 f.testcase.run_test()
-            except SkipTest:    # Letting this bubble up would mark this test as
-                                # skipped.
+            except SkipTest:    # Letting this bubble up would mark this test
+                                # as  skipped.
                 pass
 
             assert not f.it_fn.called
